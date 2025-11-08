@@ -54,6 +54,13 @@ async function urlBase64ToUint8Array(base64String) {
 async function getPublicKey(){ const r = await fetch(API_BASE + '/vapidPublicKey'); return (await r.json()).key; }
 
 enablePushBtn.onclick = async () => {
+  // 通知APIやServiceWorkerが未対応のブラウザで落ちないようにガード
+if (!('serviceWorker' in navigator) || !('Notification' in window) || !('PushManager' in window)) {
+  pushStatus.textContent = 'この環境は通知に未対応です（iOSはホーム画面追加＆iOS16.4+ が必要）';
+  pushStatus.className = 'err';
+  return;
+}
+
   try {
     const permission = await Notification.requestPermission();
     if (permission !== 'granted') throw new Error('通知が許可されていません。');
