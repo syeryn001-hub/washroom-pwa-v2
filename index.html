@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>洗面所スケジューラ（v2）</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#ffffff">
+  <style>
+    body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; margin: 1.2rem; }
+    h1 { font-size: 1.2rem; margin: 0.4rem 0 1rem; }
+    button { padding: 0.6rem 1rem; border: 1px solid #ccc; background: #f8f8f8; border-radius: 6px; cursor: pointer; }
+    input, select { padding: 0.5rem; border: 1px solid #ccc; border-radius: 6px; font-size:1rem; }
+    .row { display: flex; gap: 0.6rem; align-items: center; margin: 0.4rem 0; flex-wrap: wrap; }
+    .card { border: 1px solid #eee; border-radius: 8px; padding: 1rem; margin: 1rem 0; background: #fff; }
+    .muted { color: #666; font-size: 0.9rem; }
+    .ok { color: #0a7; }
+    .err { color: #b00; }
+    #summary ul { padding-left: 1.2rem; }
+    .warn { color: #b35a00; font-weight: 600; }
+    .actions { display:flex; gap: .5rem; }
+    .pill { padding:.2rem .5rem; border:1px solid #999; border-radius:999px; font-size:.9rem; }
+  </style>
+</head>
+<body>
+  <h1>洗面所スケジューラ（v2）</h1>
+
+  <div class="card">
+    <div class="row">
+      <label for="displayName">あなたの表示名：</label>
+      <input id="displayName" placeholder="例：太郎">
+      <button id="saveName">保存</button>
+    </div>
+    <div class="muted">家族にわかりやすい名前を入れてください（いつでも変更できます）。</div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:1.05rem;margin:0 0 .6rem;">通知の準備</h2>
+    <div class="row">
+      <button id="enablePush">通知を有効にする</button>
+      <span id="pushStatus" class="muted"></span>
+    </div>
+    <div class="muted">※ホーム画面に追加すると、より確実に届きます（PWAとして動作）。</div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:1.05rem;margin:0 0 .6rem;">明日の利用時間を登録</h2>
+    <div class="row">
+      <label for="start">開始：</label>
+      <input id="start" type="time" step="300" style="min-width:8.5rem">
+      <label for="end">終了：</label>
+      <input id="end" type="time" step="300" style="min-width:8.5rem">
+    </div>
+    <div class="actions">
+      <button id="register">登録 / 上書き</button>
+      <button id="cancelReg">取消</button>
+      <span id="regStatus" class="muted"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:1.05rem;margin:0 0 .6rem;">まとめを見る</h2>
+    <div class="row">
+      <input id="summaryDate" type="date">
+      <button id="showSummary">表示</button>
+      <a id="openToday" class="pill" href="#">今日</a>
+      <a id="openTomorrow" class="pill" href="#">明日</a>
+    </div>
+    <div id="summary" class="muted">未表示</div>
+  </div>
+
+  <div class="muted">v2（重複警告・修正取消・時間ホイール・催促・21時まとめプッシュ対応）</div>
+
+  <script src="/app.js" type="module"></script>
+</body>
+</html>
