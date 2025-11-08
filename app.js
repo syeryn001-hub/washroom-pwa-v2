@@ -1,7 +1,8 @@
 const API_URL = "https://washroom-scheduler-v2.syeryn001.workers.dev/";
 const API_BASE = 'YOUR_WORKER_ENDPOINT_BASE'; // 例: https://washroom.example.workers.dev
 
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+const base = window.location.pathname.replace(/[^/]+$/, '');
+if ('serviceWorker' in navigator) navigator.serviceWorker.register(base + 'sw.js');
 
 const $ = (id) => document.getElementById(id);
 const displayNameEl = $('displayName');
