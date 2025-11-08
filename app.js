@@ -1,8 +1,14 @@
+// Cloudflare Workers のエンドポイント
 const API_URL = "https://washroom-scheduler-v2.syeryn001.workers.dev/";
-const API_BASE = 'YOUR_WORKER_ENDPOINT_BASE'; // 例: https://washroom.example.workers.dev
+const API_BASE = "https://washroom-scheduler-v2.syeryn001.workers.dev";
 
-const base = window.location.pathname.replace(/[^/]+$/, '');
-if ('serviceWorker' in navigator) navigator.serviceWorker.register(base + 'sw.js');
+// GitHub Pages（サブフォルダ配信）でも正しく Service Worker を登録するための修正版
+if ('serviceWorker' in navigator) {
+  const swPath = `${location.pathname.replace(/[^/]+$/, '')}sw.js`; // 例: /washroom-pwa-v2/sw.js
+  navigator.serviceWorker.register(swPath, { scope: `${location.pathname.replace(/[^/]+$/, '')}` });
+}
+
+
 
 const $ = (id) => document.getElementById(id);
 const displayNameEl = $('displayName');
