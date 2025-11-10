@@ -94,10 +94,26 @@ regBtn.onclick = async () => {
   if (end <= start) { regStatus.textContent='終了は開始より後にしてください'; regStatus.className='err'; return; }
   const name = localStorage.getItem('displayName') || '';
   const body = { date: tomorrowYMD(), start, end, displayName: name };
-  const res = await fetch(API_BASE + '/register', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(body) });
-  if (!res.ok) { regStatus.textContent = '登録に失敗しました'; regStatus.className='err'; return; }
+  try {
+  const res = await fetch(API_BASE + '/register', {
+    method:'POST',
+    headers:{'content-type':'application/json'},
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const t = await res.text().catch(()=> '');
+    regStatus.textContent = '登録に失敗しました（' + (t || res.status) + '）';
+    regStatus.className='err';
+    return;
+  }
   const d = await res.json();
   regStatus.textContent = `${start}–${end}（${d.durationMin}分）で登録しました。`;
+  regStatus.className = 'ok';
+} catch (e) {
+  regStatus.textContent = '登録エラー：' + (e?.message || e);
+  regStatus.className='err';
+}
+
   regStatus.className = 'ok';
 };
 
