@@ -1,9 +1,6 @@
 self.addEventListener('install', (e) => {
   e.waitUntil((async () => {
     const cache = await caches.open('washroom-v2');
-    self.addEventListener('install', (e) => {
-  e.waitUntil((async () => {
-    const cache = await caches.open('washroom-v2');
     const base = new URL(self.registration.scope).pathname; // 例: "/washroom-pwa-v2/"
     await cache.addAll([
       base,
@@ -16,6 +13,7 @@ self.addEventListener('install', (e) => {
   })());
   self.skipWaiting();
 });
+
 
 self.addEventListener('push', (event) => {
   let data = {};
@@ -42,14 +40,3 @@ self.addEventListener('notificationclick', (event) => {
   })());
 });
 
-});
-
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-  const url = event.notification?.data?.url || '/';
-  event.waitUntil((async () => {
-    const all = await clients.matchAll({type:'window'});
-    for (const c of all) { c.focus(); c.navigate(url); return; }
-    clients.openWindow(url);
-  })());
-});
